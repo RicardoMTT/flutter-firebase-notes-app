@@ -5,6 +5,9 @@ import 'package:flutter_application_1/database.dart';
 import 'package:flutter_application_1/constants/controllers.dart';
 import 'package:flutter_application_1/start/screen.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../start/screen.dart';
 
 class LoginForm extends StatefulWidget {
   final FocusNode focusNode;
@@ -30,16 +33,20 @@ class _LoginFormState extends State<LoginForm> {
             padding: const EdgeInsets.only(
               left: 8.0,
               right: 8.0,
-              bottom: 24.0,
+              bottom: 30.0,
             ),
             child: Column(
               children: [
                 TextField(
                   controller: authController.username,
+                  decoration: InputDecoration(labelText: 'Correo'),
                 ),
 
                 TextField(
                   controller: authController.password,
+                  obscureText: true,
+                  keyboardType: TextInputType.visiblePassword,
+                  decoration: InputDecoration(labelText: 'Contraseña'),
                 ),
 
                 // CustomFormField(
@@ -71,23 +78,27 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                   ),
                 ),
-                onPressed: () {
-                  FirebaseAuth.instance
-                      .signInWithEmailAndPassword(
-                          email: authController.username.text.toString(),
-                          password: authController.password.text.toString())
-                      .then((result) {
-                    print('result $result');
+                onPressed: () async {
+                  try {
+                    User user = (await FirebaseAuth.instance
+                            .signInWithEmailAndPassword(
+                                email: authController.username.text.toString(),
+                                password:
+                                    authController.password.text.toString()))
+                        .user;
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.setString('uid', user.uid);
 
                     Get.to(LoginStartScreen());
-                  }).catchError((err) {
-                    print(err.message);
+                    print(user);
+                  } catch (e) {
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text("Error"),
-                            content: Text(err.message),
+                            content: Text(e.message),
                             actions: [
                               ElevatedButton(
                                 child: Text("Ok"),
@@ -98,7 +109,7 @@ class _LoginFormState extends State<LoginForm> {
                             ],
                           );
                         });
-                  });
+                  }
                 }
                 // widget.focusNode.unfocus();
                 // if (_loginInFormKey.currentState.validate()) {
@@ -120,7 +131,7 @@ class _LoginFormState extends State<LoginForm> {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey,
+                      color: Colors.white,
                       letterSpacing: 2,
                     ),
                   ),

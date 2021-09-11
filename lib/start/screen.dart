@@ -16,7 +16,7 @@ class _LoginScreenState extends State<LoginStartScreen> {
     return GestureDetector(
       onTap: () => _uidFocusNode.unfocus(),
       child: Scaffold(
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.only(
@@ -34,20 +34,20 @@ class _LoginScreenState extends State<LoginStartScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(height: 20),
-                      Text(
-                        'FlutterFire',
-                        style: TextStyle(
-                          color: Colors.orange,
-                          fontSize: 40,
-                        ),
-                      ),
-                      Text(
-                        'CRUD',
-                        style: TextStyle(
-                          color: Colors.orange,
-                          fontSize: 40,
-                        ),
-                      ),
+                      // Text(
+                      //   'FlutterFire',
+                      //   style: TextStyle(
+                      //     color: Colors.orange,
+                      //     fontSize: 40,
+                      //   ),
+                      // ),
+                      // Text(
+                      //   'CRUD',
+                      //   style: TextStyle(
+                      //     color: Colors.orange,
+                      //     fontSize: 40,
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

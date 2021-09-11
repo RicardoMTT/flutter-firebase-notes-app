@@ -1,6 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/authentication/login-form.dart';
+import 'package:flutter_application_1/dashboard/dashboard.dart';
+import 'package:flutter_application_1/start/screen.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key key}) : super(key: key);
@@ -11,49 +15,59 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final FocusNode _uidFocusNode = FocusNode();
+  @override
+  void initState() {
+    initSharedPreference();
+    super.initState();
+  }
+
+  initSharedPreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final uid = prefs.getString('uid');
+    print("TAKE $uid");
+    if (uid != null) {
+      Get.to(LoginStartScreen());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => _uidFocusNode.unfocus(),
       child: Scaffold(
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.white,
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.only(
-              left: 16.0,
-              right: 16.0,
-              bottom: 20.0,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Row(),
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 20),
-                      Text(
-                        'FlutterFire',
-                        style: TextStyle(
-                          color: Colors.orange,
-                          fontSize: 40,
-                        ),
-                      ),
-                      Text(
-                        'CRUD',
-                        style: TextStyle(
-                          color: Colors.orange,
-                          fontSize: 40,
-                        ),
-                      ),
-                    ],
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Padding(padding: EdgeInsets.symmetric(horizontal: 20)),
+                  SizedBox(
+                    height: 80,
                   ),
-                ),
-                LoginForm(focusNode: _uidFocusNode),
-              ],
+                  SizedBox(height: 20),
+                  Text(
+                    'FlutterFire',
+                    style: TextStyle(
+                      color: Colors.orange,
+                      fontSize: 40,
+                    ),
+                  ),
+                  Text(
+                    'Note app',
+                    style: TextStyle(
+                      color: Colors.orange,
+                      fontSize: 40,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 80,
+                  ),
+                  LoginForm(focusNode: _uidFocusNode),
+                ],
+              ),
             ),
           ),
         ),

@@ -31,11 +31,18 @@ dependencies:
   cloud_firestore:
   get:
   firebase_auth:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  flutter_launcher_icons:
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/movie-icon.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

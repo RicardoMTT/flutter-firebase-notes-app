@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/authentication/login.dart';
 import 'package:flutter_application_1/constants/controllers.dart';
+import 'package:flutter_application_1/start/screen.dart';
+import 'package:get/get.dart';
 
 class SignUpForm extends StatefulWidget {
   final FocusNode focusNode;
@@ -32,10 +35,14 @@ class _SignUpFormState extends State<SignUpForm> {
               children: [
                 TextField(
                   controller: authController.usernameSignUp,
+                  decoration: InputDecoration(labelText: 'Correo'),
                 ),
 
                 TextField(
                   controller: authController.passwordSignUp,
+                  decoration: InputDecoration(labelText: 'Password'),
+                  obscureText: true,
+                  keyboardType: TextInputType.visiblePassword,
                 ),
 
                 // CustomFormField(
@@ -67,25 +74,26 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                   ),
                 ),
-                onPressed: () {
-                  FirebaseAuth.instance
-                      .createUserWithEmailAndPassword(
-                          email: authController.usernameSignUp.text
-                              .toString()
-                              .trim(),
-                          password: authController.passwordSignUp.text
-                              .toString()
-                              .trim())
-                      .then((result) {
-                    print('result $result');
-                  }).catchError((err) {
-                    print(err.message);
+                onPressed: () async {
+                  try {
+                    UserCredential result = await FirebaseAuth.instance
+                        .createUserWithEmailAndPassword(
+                            email: authController.usernameSignUp.text
+                                .toString()
+                                .trim(),
+                            password: authController.passwordSignUp.text
+                                .toString()
+                                .trim());
+
+                    print('RE S ${result.user}');
+                  } catch (e) {
+                    print("ERROR $e");
                     showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text("Error"),
-                            content: Text(err.message),
+                            content: Text(e.message),
                             actions: [
                               ElevatedButton(
                                 child: Text("Ok"),
@@ -96,7 +104,38 @@ class _SignUpFormState extends State<SignUpForm> {
                             ],
                           );
                         });
-                  });
+                  }
+                  //  User result = await FirebaseAuth.instance
+                  //       .createUserWithEmailAndPassword(
+                  //           email: authController.usernameSignUp.text
+                  //               .toString()
+                  //               .trim(),
+                  //           password: authController.passwordSignUp.text
+                  //               .toString()
+                  //               .trim())
+                  //       .then((result) {
+                  //     Get.to(LoginStartScreen());
+
+                  //   print('result $result');
+                  // }).catchError((err) {
+                  //   print(err.message);
+                  //   showDialog(
+                  //       context: context,
+                  //       builder: (BuildContext context) {
+                  //         return AlertDialog(
+                  //           title: Text("Error"),
+                  //           content: Text(err.message),
+                  //           actions: [
+                  //             ElevatedButton(
+                  //               child: Text("Ok"),
+                  //               onPressed: () {
+                  //                 Navigator.of(context).pop();
+                  //               },
+                  //             )
+                  //           ],
+                  //         );
+                  //       });
+                  // });
                 }
                 // widget.focusNode.unfocus();
                 // if (_loginInFormKey.currentState.validate()) {
@@ -118,7 +157,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey,
+                      color: Colors.white,
                       letterSpacing: 2,
                     ),
                   ),
@@ -126,6 +165,15 @@ class _SignUpFormState extends State<SignUpForm> {
               ),
             ),
           ),
+          InkWell(
+            onTap: () {
+              Get.offAll(LoginScreen());
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Text('Volver a inicio de sesión'),
+            ),
+          )
         ],
       ),
     );

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/controllers.dart';
+import 'package:flutter_application_1/dashboard/dashboard.dart';
 import 'package:flutter_application_1/database.dart';
+import 'package:get/get.dart';
 
 class StartForm extends StatefulWidget {
   final FocusNode focusNode;
@@ -60,7 +62,8 @@ class _LoginFormState extends State<StartForm> {
                   if (_loginInFormKey.currentState.validate()) {
                     Database.userUid = authController.uid.value.text.toString();
 
-                    Navigator.pushReplacementNamed(context, 'dashboard');
+                    // Navigator.pushReplacementNamed(context, 'dashboard');
+                    Get.to(DashboardScreen());
                   }
                 },
                 child: Padding(
@@ -70,7 +73,7 @@ class _LoginFormState extends State<StartForm> {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: Colors.grey,
+                      color: Colors.white,
                       letterSpacing: 2,
                     ),
                   ),

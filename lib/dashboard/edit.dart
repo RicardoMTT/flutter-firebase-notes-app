@@ -27,27 +27,30 @@ class EditScreen extends StatelessWidget {
               child: Icon(Icons.remove))
         ],
       ),
-      body: Column(
-        children: [
-          TextField(
-            controller: appController.title,
-            decoration: InputDecoration(labelText: 'Title'),
-          ),
-          TextField(
-            controller: appController.description,
-            decoration: InputDecoration(labelText: 'Descripcion'),
-          ),
-          FlatButton(
-              onPressed: () async {
-                await Database.updateItem(
-                    title: appController.title.text.toString(),
-                    description: appController.description.text.toString(),
-                    docId: id);
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: appController.title,
+              decoration: InputDecoration(labelText: 'Title'),
+            ),
+            TextField(
+              controller: appController.description,
+              decoration: InputDecoration(labelText: 'Descripcion'),
+            ),
+            FlatButton(
+                onPressed: () async {
+                  await Database.updateItem(
+                      title: appController.title.text.toString(),
+                      description: appController.description.text.toString(),
+                      docId: id);
 
-                Get.back();
-              },
-              child: Text('Actualizar'))
-        ],
+                  Get.back();
+                },
+                child: Text('Actualizar'))
+          ],
+        ),
       ),
     );
   }
